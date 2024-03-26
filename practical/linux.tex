@@ -1,0 +1,2356 @@
+\documentclass[11pt]{article}
+\usepackage{sectsty}
+\allsectionsfont{\color{blue}\fontfamily{lmss}\selectfont}
+\usepackage{fontspec}
+\setmainfont{XCharter}
+
+\usepackage{listings}
+\lstset{
+basicstyle=\small\ttfamily,
+tabsize=8,
+columns=flexible,
+breaklines=true,
+frame=tb,
+rulecolor=\color[rgb]{0.8,0.8,0.7},
+backgroundcolor=\color[rgb]{1,1,0.91},
+postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+\usepackage{fontawesome}
+
+
+\usepackage{mdframed}
+\newmdenv[
+  backgroundcolor=gray,
+  fontcolor=white,
+  nobreak=true,
+]{terminalinput}
+
+
+
+\usepackage{parskip}
+
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+
+
+
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{index}
+
+
+
+
+
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{blue}\LARGE\faKeyboardO\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+
+
+
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+
+
+
+\renewcommand{\PY}[2]{{#2}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\rhead{\color{gray}\sf\small\rightmark}
+\lhead{\nouppercase{\color{gray}\sf\small\leftmark}}
+\cfoot{\color{gray}\sf\thepage}
+\renewcommand{\footrulewidth}{1pt}
+\begin{document}
+
+
+
+
+
+    \hypertarget{linux-for-bioinformatics}{%
+\section{Linux for Bioinformatics}\label{linux-for-bioinformatics}}
+
+\hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+Unix and Unix-like operating systems are the standard operating system
+on most large computer systems in scientific research, in the same way
+that Microsoft Windows is the dominant operating system on desktop PCs.
+In this course we will use Linux, a Unix-like operating system which was
+originally created to provide a free open source operating system for
+PCs.
+
+Linux is a powerful, secure, robust and stable operating system which
+allows dozens of people to run programs on the same computer at the same
+time. This is why it is the preferred operating system for large-scale
+scientific computing. It runs on all kinds of machines, from mobile
+phones (Android), desktop PCs\ldots{} to supercomputers.
+
+\hypertarget{why-linux}{%
+\subsubsection{Why Linux?}\label{why-linux}}
+
+Increasingly, the output of biological research exists as in silico
+data, usually in the form of large text files. Linux is particularly
+suitable for working with such files and has several powerful and
+flexible commands that can be used to process and analyse this data. One
+advantage of learning Linux is that many of the commands can be combined
+in an almost unlimited fashion. So if you can learn just six Linux
+commands, you will be able to do a lot more than just six things.
+
+Linux contains hundreds of commands, but to conduct your analysis you
+will probably only need 10 or so to achieve most of what you want to do.
+In this tutorial we will introduce you to some useful Linux commands and
+provide examples of how they can be used in bioinformatics analyses.
+
+\hypertarget{learning-outcomes}{%
+\subsection{Learning outcomes}\label{learning-outcomes}}
+
+By the end of the tutorial you can expect to be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Understand the Linux directory structure and navigate around this
+  structure
+\item
+  Extract information from large files
+\item
+  Use regular expressions to search for particular patterns in a file
+\item
+  Create a bash script to perform several tasks at once
+\end{itemize}
+
+\hypertarget{tutorial-sections}{%
+\subsection{Tutorial sections}\label{tutorial-sections}}
+
+This tutorial comprises the following sections:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \href{basic.ipynb}{Basic Linux}
+\item
+  \href{grep_and_awk.ipynb}{Commands grep and awk}
+\item
+  \href{advanced_linux.ipynb}{Advanced Linux (loops and Bash scripts)}
+\item
+  \href{bash.ipynb}{Bash scripting}
+\end{enumerate}
+
+\textbf{Note:} If you are an experienced linux user then please feel
+free to skip the \href{basic.ipynb}{Basic Linux} section and move
+directly to the section \href{grep_and_awk.ipynb}{Commands grep and
+awk}.
+
+Also, do not worry if you do not complete all sections in the time
+allocated, a good target to aim for is the end of section on
+\href{advanced_linux.ipynb}{Advanced Linux (loops and Bash scripts)}.
+The remaining sections are optional and are for students who would like
+to expand their Linux skills and can be completed outside the course
+hours.
+
+\hypertarget{authors-and-license}{%
+\subsection{Authors and License}\label{authors-and-license}}
+
+This tutorial was created by
+\href{https://github.com/jacquikeane}{Jacqui Keane} and
+\href{https://github.com/martinghunt}{Martin Hunt}.
+
+The content is licensed under a
+\href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons
+Attribution 4.0 International License (CC-By 4.0)}.
+
+\hypertarget{running-the-commands-in-this-tutorial}{%
+\subsection{Running the commands in this
+tutorial}\label{running-the-commands-in-this-tutorial}}
+
+You can follow this tutorial by typing all the commands you see in a
+terminal window on your computer. This is similar to the ``Command
+Prompt'' window on MS Windows systems, which allows the user to type DOS
+commands to manage files.
+
+To get started, open a terminal window and type the command below
+followed by the \texttt{Enter} key:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{cd}\PY{+w}{ }\PYZti{}/course\PYZus{}data/linux/data
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now you can follow the instructions in the tutorial from here.
+
+\hypertarget{cheat-sheet}{%
+\subsection{Cheat sheet}\label{cheat-sheet}}
+
+We've also included a \href{cheat_sheet.ipynb}{cheat sheet} at the end
+of this tutorial. It probably won't make a lot of sense now, but it
+might be a useful reminder later.
+
+\hypertarget{lets-get-started}{%
+\subsection{Let's get started!}\label{lets-get-started}}
+
+To get started with the tutorial, go to the next section:
+\href{basic.ipynb}{Basic Linux}
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{basic-linux}{%
+\section{Basic Linux}\label{basic-linux}}
+
+\hypertarget{the-commandline}{%
+\subsection{The Commandline}\label{the-commandline}}
+
+The commandline or `terminal' is a text-based interface you can use to
+run programs and analyse your data. If this is your first time using one
+it will seem pretty daunting at first but, with just a few commands,
+you'll start to see how it helps you to get things done more
+efficiently.
+
+    \hypertarget{getting-started}{%
+\subsection{Getting started}\label{getting-started}}
+
+When working on the commandliine you will always work in a specific
+location or directory in the filesystem. So let's check that you're in
+the right place. Type the command below in the terminal window followed
+by the \texttt{Enter} key:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{pwd}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The \texttt{pwd} command stands for print working directory. It should
+display something similar to:
+
+    \texttt{/home/manager/course\_data/linux/data}
+
+    This means you are working in the \texttt{data} directory found inside
+the \texttt{linux} directory inside the \texttt{course\_data} directory
+and so on. There will be more on the linux filesystem structure shortly.
+
+Now continue through this tutorial, entering any commands that you
+encounter (highlighted in a grey box with a keyboard symbol) into your
+terminal window followed by the \texttt{Enter} key. Let's start by
+listing the contents of the current working directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls
+\end{Verbatim}
+\end{tcolorbox}
+
+    You should see 6 items:
+
+
+\begin{center}
+\includegraphics[Output of the list command]{images/ls_output.png}
+\end{center}
+
+
+    \hypertarget{commands-options-and-arguments}{%
+\subsection{Commands, options and
+arguments}\label{commands-options-and-arguments}}
+
+A command consists of three parts: the \textit{command}, \textit{options},
+and \textit{arguments}. Of these, the command is required while options
+and arguments are optional. Options are used to modify the default
+behavior of the command. Arguments are used to provide input to the
+command.
+
+\texttt{command\ -options\ arguments}
+
+In the previous call to \texttt{ls}, the command is \texttt{ls} and
+there are no options or arguments passed to the \texttt{ls} command.
+
+Now let's add some options, here the command is \texttt{ls}, and
+\texttt{-a} and \texttt{-l} are options:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }\PYZhy{}a\PY{+w}{ }\PYZhy{}l
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Note} that there is a space between the command \texttt{ls} and
+the options \texttt{-a} and \texttt{-l}. There is no space between the
+dashes and the letters \texttt{a} and \texttt{l}.
+
+The \texttt{-a} option will list \textit{all} contents of a directory
+including hidden files and directories (hidden files and directories are
+not shown by default and are used to help important data from being
+deleted) and the \texttt{-l} option will print additional information
+about each item in the directory (size, owner, date changed etc.).
+
+You can also combine the \texttt{-a} and \texttt{-l} options into what
+appears to be a single \texttt{-al} option. It's almost always ok to do
+this for options which are made up of a single dash followed by a single
+letter.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }\PYZhy{}al
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now let's add an argument, here the command is \texttt{ls}, the options
+are \texttt{-a} and \texttt{-l} and \texttt{Pfalciparum} is the
+argument:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }\PYZhy{}al\PY{+w}{ }Pfalciparum/
+\end{Verbatim}
+\end{tcolorbox}
+
+    The argument instructs the \texttt{ls} command to display the content of
+the specified directory, in this case \texttt{Pfalciparum} instead of
+the current directory.
+
+    There are some general points to remember that will make your life
+easier:
+
+\begin{itemize}
+\tightlist
+\item
+  Linux is case sensitive - typing \texttt{ls} is not the same as typing
+  \texttt{LS}.
+\item
+  \texttt{ls} is the letter \texttt{l} followed by the letter \texttt{s}
+  (not the number one).
+\item
+  Often when you have problems with Linux, it is due to a spelling
+  mistake. Check that you have not misspelled a command or missed a
+  space between the command and the options and arguments. Pay careful
+  attention if typing commands across multiple lines.
+\end{itemize}
+
+    \hypertarget{files-and-directories}{%
+\subsection{Files and directories}\label{files-and-directories}}
+
+\textit{Directories} are the Linux equivalent of folders on a PC or Mac.
+They are organised in a hierarchy, so directories can have
+sub-directories and so on. Directories are very useful for organising
+your work and keeping your account tidy - for example, if you have more
+than one project, you can organise the files for each project into
+different directories to keep them separate.
+
+The start of the filesystem is known as the root directory and denoted
+with \texttt{/} symbol. The location or directory that you are in at any
+given time is referred to as the current working directory denoted with
+the \texttt{.} symbol.
+
+Every file and directory on the computer is found in a specific
+location. The location is specified as a path to that file or directory
+and can be expresed as either the \textit{relative path} or \textit{absolute
+path}.
+
+The \textit{relative path} is the location of a file or directory from the
+current working directory (.).
+
+The \textit{absolute path} is the location of a file or directory from the
+start of the file system or root directory (/).
+
+    For example, for the file called \texttt{directory\_structure.png} under
+the \texttt{linux} directory, the location or \textit{relative path} can
+be expressed as:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }./basic/directory\PYZus{}structure.png
+\end{Verbatim}
+\end{tcolorbox}
+
+    The location of this file can also be expressed using the \textit{absolute
+path} as:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }/home/manager/course\PYZus{}data/linux/data/basic/directory\PYZus{}structure.png
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{figure}
+\centering
+\includegraphics{images/directory_structure.png}
+\caption{Directory structure}
+\end{figure}
+
+    \hypertarget{tree---display-the-directory-hierarchy}{%
+\subsection{tree - display the directory
+hierarchy}\label{tree---display-the-directory-hierarchy}}
+
+The command \texttt{tree} can be used to recursively list or display the
+content of a directory in a tree-like format. It outputs the directory
+paths and files in each sub-directory and a summary of a total number of
+sub-directories and files.
+
+To display the contents of the current directory, type:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+tree
+\end{Verbatim}
+\end{tcolorbox}
+To display the hierarchy of the `linux` directory:
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+tree\PY{+w}{ }/home/manager/course\PYZus{}data/linux
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{cd---change-directory}{%
+\subsection{cd - change directory}\label{cd---change-directory}}
+
+The command \texttt{cd} stands for change directory. The \texttt{cd}
+command will move you from the current working directory to another
+directory.
+
+To move into the \texttt{basic} directory type the following command.
+Note, you'll remember this more easily if you type this rather than
+copying and pasting.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{cd}\PY{+w}{ }basic
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now look at the directory hierarchy of this directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+tree
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{getting-help-man}{%
+\subsection{Getting help man}\label{getting-help-man}}
+
+It is not possible to remember all the options and arguments for all
+Linux commands! A useful command to obtain further information on any
+Linux command is the \texttt{man} command. For example, to get a full
+description and examples of how to use the \texttt{find} command type
+the following command in a terminal window.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+man\PY{+w}{ }find
+\end{Verbatim}
+\end{tcolorbox}
+
+    To exit out of the man command type \texttt{q}.
+
+    \hypertarget{find---find-a-file}{%
+\subsection{find - find a file}\label{find---find-a-file}}
+
+The \texttt{find} command can be used to find files in a directory
+hierarchy that match a specific criteria. For example, it can be used to
+recursively search the directory tree for a specific file name or
+pattern, seeking files and directories that match the given name or
+pattern.
+
+    To find all files in the current directory (.) named
+\texttt{Malaria.fa}:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+find\PY{+w}{ }.\PY{+w}{ }\PYZhy{}name\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}Malaria.fa\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    To find all files in the current directory (.) and all its
+subdirectories that have the suffix \texttt{.bed}:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+find\PY{+w}{ }.\PY{+w}{ }\PYZhy{}name\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}*.bed\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    How many bed files did you find?
+
+    Can you construct a command to find all the subdirectories contained in
+the current directory? \textbf{Hint:} You may need to go back to reading
+the manual page for the \texttt{find} command and search for the
+\texttt{-type} option. Don't spend too much time on this as the solution
+will be provided and explained later.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    How many subdirectories did you find?
+
+    \hypertarget{tab-completion}{%
+\subsection{Tab completion}\label{tab-completion}}
+
+Typing out directory or file names is really boring and you're likely to
+make typos which will at best make your command fail with a strange
+error and at worst overwrite some of your carefully crafted analysis.
+\textit{Tab completion} is a trick which normally reduces this risk
+significantly.
+
+List the contents of the Styphi directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }Styphi
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now instead of typing out \texttt{ls\ Styphi/}, try typing
+\texttt{ls\ S} and then press the \texttt{tab} key (instead of
+\texttt{Enter}). The rest of the folder name should just appear.
+
+If you have two files or directories with simiar names
+(e.g.~\texttt{directory\_structure.png} and
+\texttt{directory\_structure2.png}) then you might need to give your
+terminal a bit of a hand to work out which one you want. Type the
+following and then press the \texttt{tab} key (instead of
+\texttt{Enter}).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }\PYZhy{}l\PY{+w}{ }d
+\end{Verbatim}
+\end{tcolorbox}
+
+    In this case, when you press \texttt{tab} the terminal reads
+\texttt{ls\ -l\ directory\_structure}, you then need to type \texttt{2}
+followed by another \texttt{tab} and it works out that you meant
+\texttt{directory\_structure2.png}.
+
+    \hypertarget{tips}{%
+\subsection{Tips}\label{tips}}
+
+There are some short cuts for referring to directories:
+
+\begin{itemize}
+\tightlist
+\item
+  . Current directory (one full stop)
+\item
+  .. Directory above in the hierarchy (two full stops)
+\item
+  \textasciitilde{} Home directory (tilde)
+\item
+  / Root of the file system (like C:~in Windows)
+\end{itemize}
+
+Try the following commands, what do they do?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }.
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }..
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }\PYZti{}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{exercises}{%
+\subsection{Exercises}\label{exercises}}
+
+Many people panic when they are confronted with a Linux prompt! Don't!
+All the commands you need to solve these exercises are provided above
+and don't be afraid to make a mistake. If you get lost ask an
+instructor. If you are a person skilled at Linux, be patient this is
+only a short exercise.
+
+To begin, open a terminal window and navigate to the \texttt{basic}
+directory under the the \texttt{linux} directory (remember use the
+command \texttt{cd}) and then complete the exercise below.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  List \textit{all} the contents of the \texttt{basic} directory. How many
+  files did you find?
+\item
+  How many files are there in the \texttt{Styphi} directory?
+\item
+  How many files are there in the \texttt{Pfalciparum} directory?
+\item
+  Use the \texttt{find} command to find all gff files in the
+  \texttt{linux} directory, how many did you find?
+\item
+  Use the \texttt{find} command to find all fasta files in the
+  \texttt{linux} directory, how many did you find?
+\end{enumerate}
+
+    When you have completed these exercises move on to the next part of the
+tutorial, \href{grep_and_awk.ipynb}{grep and awk}.
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{the-commands-grep-and-awk}{%
+\section{\texorpdfstring{The commands \texttt{grep} and
+\texttt{awk}}{The commands grep and awk}}\label{the-commands-grep-and-awk}}
+
+In this section we will introduce the commands \texttt{grep} and
+\texttt{awk}.
+
+    \hypertarget{searching-inside-files-with-grep}{%
+\subsection{\texorpdfstring{Searching inside files with
+\texttt{grep}}{Searching inside files with grep}}\label{searching-inside-files-with-grep}}
+
+A common task is to extract information from large files. This can be
+achieved using the Linux command \texttt{grep}, which stands for
+``Globally search for a Regular Expression and Print''. The meaning of
+this acronym will become clear later, when we discuss Regular
+Expressions. First, we will consider simpler examples.
+
+Before we start, change into the \texttt{grep} directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{cd}\PY{+w}{ }../grep
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{simple-pattern-matching}{%
+\subsubsection{Simple pattern matching}\label{simple-pattern-matching}}
+
+We will use a small example file (in ``BED'' format), which contains
+information about gene features in a genome. Take a look at the contents
+of the first example BED file used in this section:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+cat\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    A bed file is a column-based file, each column contains information
+about the feature and is seperated by a tab character. There can be more
+than 10 columns, but only the first three are required to be a valid
+file. The file format is described in full here:
+\url{http://genome.ucsc.edu/FAQ/FAQformat\#format1}. We will use the
+first 5 columns:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Sequence name
+\item
+  start position (starting from 0, not 1)
+\item
+  end position (starting from 0, not 1)
+\item
+  feature name
+\item
+  score (which is used to store the gene expression level in our
+  examples).
+\end{enumerate}
+
+    In reality, such a file could contain 100,000s of lines, so that it is
+not practical to read manually. Suppose we are interested in all the
+genes from chromosome 2. We can find all these lines using grep:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }chr2\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    This has shown us all the lines that contain the text or string
+``chr2''.
+
+Now we want to find all genes from chromosome 2 that are on the positive
+strand. We can use the \textbar{} symbol which is also known as the pipe
+symbol to extract the genes that are on the positive strand, using grep
+a second time:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }chr2\PY{+w}{ }gene\PYZus{}expression.bed\PY{+w}{ }\PY{p}{|}\PY{+w}{ }grep\PY{+w}{ }+
+\end{Verbatim}
+\end{tcolorbox}
+
+    This \textit{pipes} (sends) the output of
+\texttt{grep\ chr2\ gene\_expression.bed} into the input of
+\texttt{grep\ +}.
+
+Since \texttt{grep} is reporting a match to a string \textit{anywhere} on
+a line, such simple searches can have undesired consequences. For
+example, consider the result of doing a similar search for all the genes
+in chromosome 1:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }chr1\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    Oops! We found genes in chromosome 10, because ``chr1'' is a substring
+(subset) of ``chr10''.
+
+Or consider the following file, where the genes have unpredictable names
+(which is not unusual for bioinformatics data).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+cat\PY{+w}{ }gene\PYZus{}expression\PYZus{}sneaky.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now we try to find genes on chromosome 1 that are on the negative
+strand. We put the minus sign in quotes, to stop Linux interpreting this
+as an option to \texttt{grep}, as opposed to the string we are searching
+for:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }chr1\PY{+w}{ }gene\PYZus{}expression\PYZus{}sneaky.bed\PY{+w}{ }\PY{p}{|}\PY{+w}{ }grep\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZhy{}\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The extra lines are found by \texttt{grep} because of matches in columns
+we were not expecting to match. Remember, \texttt{grep} is reporting
+these lines because they each contain the strings ``chr1'' and ``-''
+\textit{somewhere}.
+
+We need a way to make searching with \texttt{grep} more specific.
+
+\hypertarget{regular-expressions}{%
+\subsubsection{Regular expressions}\label{regular-expressions}}
+
+Regular expressions provide the solution to the above problems. They are
+ways of defining more specific patterns to search for.
+
+\hypertarget{matching-the-start-and-end-of-lines}{%
+\paragraph{Matching the start and end of
+lines}\label{matching-the-start-and-end-of-lines}}
+
+First, we can specify that a match must be at the start of a line using
+the symbol ``\texttt{\^{}}'', which means ``start of line''. Without the
+\texttt{\^{}}, we find any match to ``chr1'':
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }chr1\PY{+w}{ }gene\PYZus{}expression\PYZus{}sneaky.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZca{}chr1\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression\PYZus{}sneaky.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    Good! We have removed the match to the badly-named gene ``chr11.gene1'',
+which is on chromosome 8. Now we want to avoid matching chromosomes 10
+and 11. This can be done by also looking for a ``tab'' character, which
+is represented by writing \texttt{\textbackslash{}t}. For technical
+reasons, which are beyond the scope of this course, we must also put a
+dollar sign before the quotes to make any search involving a tab
+character work.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr1\PYZbs{}t\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression\PYZus{}sneaky.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    To find the genes on the negative strand, all that remains is to match a
+minus sign at the \textit{end} of the line (so that we do not find
+``sneaky-gene3''). We can do this using the dollar ``\texttt{\$}'',
+which means ``end of line''.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr1\PYZbs{}t\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression\PYZus{}sneaky.bed\PY{+w}{ }\PY{p}{|}\PY{+w}{ }grep\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZbs{}\PYZhy{}\PYZdl{}\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{wildcards-and-alphabets}{%
+\paragraph{Wildcards and alphabets}\label{wildcards-and-alphabets}}
+
+Another special character in regular expressions is the dot: ``.''. This
+stands for any single character. For example, this finds all matches to
+chromosomes 1-9, and chromosomes X and Y:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr.\PYZbs{}t\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    In fact, the earlier command that found all genes on chromosome 1 that
+are on the negative strand, could be found with a single call to
+\texttt{grep} instead of two calls piped together. To do this, we need a
+regular expression that finds lines that:
+
+\begin{itemize}
+\tightlist
+\item
+  start with chr1, then a tab character
+\item
+  end with a minus
+\item
+  have arbitrary characters between.
+\end{itemize}
+
+The asterisk ``*'' has a special meaning: it says to match any number
+(including zero) of whatever character is before the *. For example, the
+regular expression `AC*G' will match AG, ACG, ACCG, etc. The simpler,
+improved command is:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr1\PYZbs{}t.*\PYZhy{}\PYZdl{}\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression\PYZus{}sneaky.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    As well as matching any character using a dot, we can define any list of
+characters to match, using square brackets. For example, {[}12X{]} means
+match a 1, 2, or an X. This can be used to find all genes from
+chromosomes 1, 2 and X:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr[12X]\PYZbs{}t\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    Or just the autosomes may be of interest. To do this we introduce two
+new features:
+
+\begin{itemize}
+\tightlist
+\item
+  Ranges can be given in square brackets, for example {[}1-5{]} will
+  match 1, 2, 3, 4 or 5.
+\item
+  The plus sign ``+'' has a special meaning that is similar to ``*''.
+  Instead of any number of matches (including zero), it looks for at
+  least one match. To avoid simply matching a plus sign, it must be
+  preceded by a backslash: ``\textbackslash+''. For example, the regular
+  expression `AC\textbackslash+G' will match ACG, ACCG, ACCCG etc (but
+  will not match AG).
+\end{itemize}
+
+Warning: Adding a backslash is often called \textit{escaping}
+(e.g.~\textit{escape the plus symbol}). Depending on the software you're
+using (and the options you give it), you may need to escape the symbol
+to indicate that you want its special regex meaning (e.g.~multiple
+copies of the last character please) or its literal meaning (e.g.~give
+me a `+' symbol please). If your command isn't working as you expect,
+try playing with these options and always test your regular expression
+before assuming it gave you the right answer.
+
+The command to find the autosomes is:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr[0\PYZhy{}9]\PYZbs{}+\PYZbs{}t\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{other-grep-options}{%
+\subsubsection{\texorpdfstring{Other \texttt{grep}
+options}{Other grep options}}\label{other-grep-options}}
+
+The Linux command \texttt{grep} and regular expressions are extremely
+powerful and we have only scratched the surface of what they can do.
+Take a look at the manual (by typing \texttt{man\ grep}) to get an idea.
+A few particularly useful options are discussed below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+man\PY{+w}{ }grep
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{counting-matches}{%
+\paragraph{Counting matches}\label{counting-matches}}
+
+A common scenario is counting matches within files. Instead of output
+each matching line, the option ``\texttt{-c}'' tells \texttt{grep} to
+report the number of lines that matched. For example, the number of
+genes in the autosomes in the above example can be found by simply
+adding \texttt{-c} to the command.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PYZhy{}c\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr[0\PYZhy{}9]\PYZbs{}+\PYZbs{}t\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{case-sensitivity}{%
+\paragraph{Case sensitivity}\label{case-sensitivity}}
+
+By default, \texttt{grep} is case-sensitive. It can be useful to ignore
+the distinction between upper and lower case using the option
+``\texttt{-i}''. Suppose we have a file of sequences, and want to find
+the sequences that contain the string ACGT. It is not unusual to come
+across files that have a mix of upper and lower case nucleotides.
+Consider this FASTA file:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+cat\PY{+w}{ }sequences.fasta
+\end{Verbatim}
+\end{tcolorbox}
+
+    A simple search for ACGT will not return all the results:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }ACGT\PY{+w}{ }sequences.fasta
+\end{Verbatim}
+\end{tcolorbox}
+
+    However, making the search case-insensitive solves the problem.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PYZhy{}i\PY{+w}{ }ACGT\PY{+w}{ }sequences.fasta
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{inverting-matches}{%
+\paragraph{Inverting matches}\label{inverting-matches}}
+
+By default, \texttt{grep} reports all lines that do match the regular
+expression. Sometimes it is useful to filter a file, by reporting lines
+that \textit{do not} match the regular expression. Using the option
+``\texttt{-v}'' makes \texttt{grep} ``invert'' the output. For example,
+we could exclude genes from autosomes in the BED file from earlier.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+grep\PY{+w}{ }\PYZhy{}v\PY{+w}{ }\PY{l+s+s1}{\PYZdl{}\PYZsq{}\PYZca{}chr[0\PYZhy{}9]\PYZbs{}+\PYZbs{}t\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{replacing-matches-to-regular-expressions}{%
+\subsubsection{Replacing matches to regular
+expressions}\label{replacing-matches-to-regular-expressions}}
+
+Finally, we show how to replace every match to a regular expression with
+something else, using the command ``\texttt{sed}''. The general form of
+this is:
+
+\begin{verbatim}
+sed 's/regular expression/new string/' input_file
+\end{verbatim}
+
+This will output a new version of the input file, with each match to the
+regular expression replaced with ``\texttt{new\ string}''. For example,
+try:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+sed\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}s/\PYZca{}chr/chromosome/\PYZsq{}}\PY{+w}{ }gene\PYZus{}expression.bed
+\end{Verbatim}
+\end{tcolorbox}
+
+    This will replace every occurence of the text ``chr'' that appears at
+the start of a line in the file \texttt{gene\_expression.bed} with the
+text ``chromosome''.
+
+    \hypertarget{exercises}{%
+\subsubsection{Exercises}\label{exercises}}
+
+The following exercises all use the FASTA file \texttt{exercises.fasta}.
+Before starting the exercises, open a new terminal and navigate to the
+\texttt{linux/data/grep} directory, which contains
+\texttt{exercises.fasta}.
+
+Use \texttt{grep} to find the answers. Hint: some questions require you
+to use \texttt{grep} twice, and possibly some other Linux commands.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Make a \texttt{grep} command that outputs just the lines with the
+  sequence names.
+\item
+  How many sequences are in the file?
+\item
+  Do any sequence names have spaces in them? What are their names?
+\item
+  Make a \texttt{grep} command that outputs just the lines with the
+  sequences, not the names.
+\item
+  How many sequences contain unknown bases (an ``n'' or ``N'')?
+\item
+  Are there any sequences that contain non-nucleotides (something other
+  than A, C, G, T or N)?
+\item
+  How many sequences contain the 5' cut site GCWGC (where W can be an A
+  or T) for the restriction enzyme AceI?
+\item
+  Are there any sequences that have the same name? You do not need to
+  find the actual repeated names, just whether any names are repeated.
+  (Hint: it may be easier to first discover how many unique names there
+  are).
+\end{enumerate}
+
+    \hypertarget{file-processing-with-awk}{%
+\subsection{File processing with AWK}\label{file-processing-with-awk}}
+
+AWK is a programming language named after the initials of its three
+inventors: Alfred \textbf{A}ho, Peter \textbf{W}einberger, and Brian
+\textbf{K}ernighan. AWK is incredibly powerful at processing files,
+particularly column-based files (e.g.~BED, GFF and SAM files), which are
+commonplace in Bioinformatics.
+
+Before we start, change into the \texttt{awk} directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{cd}\PY{+w}{ }../awk
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{extracting-columns-from-files}{%
+\subsubsection{Extracting columns from
+files}\label{extracting-columns-from-files}}
+
+The command \texttt{awk} reads a file line-by-line, splitting each line
+into columns. This makes it easy to do simple things like extract a
+column from a file. We will use the following GFF file for our examples.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+cat\PY{+w}{ }genes.gff
+\end{Verbatim}
+\end{tcolorbox}
+
+    A GFF file is similar to a BED file in that it contains information
+about gene features in a genome. It is a column-based file, each column
+contains information about the feature. The columns in the GFF file are
+separated by tabs and each column has the following meaning:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Sequence name
+\item
+  Source - the name of the program that made the feature
+\item
+  Feature - the type of feature, for example gene or CDS
+\item
+  Start position
+\item
+  Stop position
+\item
+  Score
+\item
+  Strand (+ or -)
+\item
+  Frame (0, 1, or 2)
+\item
+  Optional extra information, in the form
+  key1=value1;key2=value2;\ldots{}
+\end{enumerate}
+
+The score, strand, and frame can be set to `.' if it is not relevant for
+that feature. The final column 9 may or may not be present and could
+contain any number of key, value pairs.
+
+We can use \texttt{awk} to just print the first column of the file.
+\texttt{awk} calls the columns \texttt{\$1}, \texttt{\$2}, \ldots{} etc,
+and the complete line is called \texttt{\$0}. Try
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+awk\PY{+w}{ }\PYZhy{}F\PY{l+s+s2}{\PYZdq{}\PYZbs{}t\PYZdq{}}\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZob{}print \PYZdl{}1\PYZcb{}\PYZsq{}}\PY{+w}{ }genes.gff
+\end{Verbatim}
+\end{tcolorbox}
+
+    A little explanation is needed.
+
+\begin{itemize}
+\tightlist
+\item
+  The option \texttt{-F"\textbackslash{}t"} was needed to tell
+  \texttt{awk} that the columns are separated by tabs (more on this
+  later).
+\item
+  For each line of the file, \texttt{awk} does what is inside the curly
+  brackets. In this case, we simply print the first column (\$1).
+\end{itemize}
+
+The repeated chromosome names are not nice. It is more likely to want to
+know just the unique names, which can be found by piping into the Linux
+command \texttt{sort\ -u}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+awk\PY{+w}{ }\PYZhy{}F\PY{l+s+s2}{\PYZdq{}\PYZbs{}t\PYZdq{}}\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZob{}print \PYZdl{}1\PYZcb{}\PYZsq{}}\PY{+w}{ }genes.gff\PY{+w}{ }\PY{p}{|}\PY{+w}{ }sort\PY{+w}{ }\PYZhy{}u
+\end{Verbatim}
+\end{tcolorbox}
+
+    In this command the \texttt{\textbar{}} symbol is known as the
+\textit{pipe} symbol. This \textit{pipes} (sends) the output of the
+\texttt{awk} command into the input of \texttt{sort\ -u}. The
+\texttt{sort} will sort the contents of the input. When you sort the
+input, lines with identical content end up next to each other in the
+output. The \texttt{-u} option of the sort command will select only the
+unique values in the output.
+
+    You can connect as many commands as you want. For example, type:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+awk\PY{+w}{ }\PYZhy{}F\PY{l+s+s2}{\PYZdq{}\PYZbs{}t\PYZdq{}}\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZob{}print \PYZdl{}1\PYZcb{}\PYZsq{}}\PY{+w}{ }genes.gff\PY{+w}{ }\PY{p}{|}\PY{+w}{ }sort\PY{+w}{ }\PYZhy{}u\PY{+w}{ }\PY{p}{|}\PY{+w}{ }wc\PY{+w}{ }\PYZhy{}l
+\end{Verbatim}
+\end{tcolorbox}
+
+    This will count the number of lines in the output.
+
+    \hypertarget{filtering-the-input-file}{%
+\subsubsection{Filtering the input
+file}\label{filtering-the-input-file}}
+
+Similarly to \texttt{grep}, \texttt{awk} can be used to filter out lines
+of a file. However, since awk is column-based, it makes it easy to
+filter based on properties of any columns of interest. The filtering
+criteria can be added before the braces. For example, the following
+extracts just chromosome 1 from the file.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+awk\PY{+w}{ }\PYZhy{}F\PY{l+s+s2}{\PYZdq{}\PYZbs{}t\PYZdq{}}\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZdl{}1==\PYZdq{}chr1\PYZdq{} \PYZob{}print \PYZdl{}0\PYZcb{}\PYZsq{}}\PY{+w}{ }genes.gff
+\end{Verbatim}
+\end{tcolorbox}
+
+    There are two important things to note from the above command:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \texttt{\$1=="chr1"} means that column 1 must be \textit{exactly} equal
+  to ``chr1''. This means that ``chr10'' is not found.
+\item
+  The ``\texttt{\{print\ \$0\}}'' part only happens when the first
+  column is equal to ``chr1'', otherwise \texttt{awk} does nothing (the
+  line gets ignored).
+\end{enumerate}
+
+Awk commands are made up of two parts, a \textit{pattern}
+(e.g.~\texttt{\$1=="chr1"}) and an \textit{action}
+(e.g.~\texttt{print\ \$0}) which is contained in curly braces. The
+\textit{pattern} defines which lines the \textit{action} is applied to.
+
+In fact, the action (the part in curly braces) can be omitted in this
+example. \texttt{awk} assumes that you want to print the whole line,
+unless it is told otherwise. This gives a simple method of filtering
+based on columns.
+
+    \hypertarget{exercises}{%
+\subsubsection{Exercises}\label{exercises}}
+
+The following exercises all use the BED file \texttt{exercises.bed}.
+Before starting the exercises, open a new terminal and navigate to the
+\texttt{awk} directory, which contains \texttt{exercises.bed}.
+
+Use \texttt{awk} to find the answers to the following questions about
+the file \texttt{exercises.bed}. Many questions will require using pipes
+(eg ``\texttt{awk\ ...\ \textbar{}\ sort\ -u}'' for question 1).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  What are the names of the contigs in the file?
+\item
+  How many contigs are there?
+\item
+  How many features are on the positive strand?
+\item
+  How many features are on the negative strand?
+\item
+  How many repeat features are there?
+\end{enumerate}
+
+    When you have completed these exercises move on to the next part of the
+tutorial, \href{advanced_linux.ipynb}{Advanced Linux}.
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{advanced-linux}{%
+\section{Advanced Linux}\label{advanced-linux}}
+
+So far, we have run single commands in a terminal. Now we will look at
+ways to run more than a single command and how to automate tasks.
+
+Before you start this section change into the \texttt{advanced\_linux}
+directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{cd}\PY{+w}{ }../advanced\PYZus{}linux
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{repeating-analysis-with-loops}{%
+\subsection{Repeating analysis with
+loops}\label{repeating-analysis-with-loops}}
+
+It is common in Bioinformatics to run the same analysis on many files.
+Suppose we had a command that ran one type of analysis, and we wanted to
+repeat the same analysis on 100 different files. It would be tedious,
+and error-prone, to write the same command 100 times. Instead we can use
+a loop.
+
+As an example, say we wanted to run \texttt{wc} on each file in the
+directory \texttt{loop\_files}.
+
+First let's look at the contents of the \texttt{loop\_files} directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }loop\PYZus{}files/
+\end{Verbatim}
+\end{tcolorbox}
+
+    To run \texttt{wc} on each of the files found in the directory
+\texttt{loop\_files/} use the following command:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for}\PY{+w}{ }filename\PY{+w}{ }\PY{k}{in}\PY{+w}{ }loop\PYZus{}files/*\PY{p}{;}\PY{+w}{ }\PY{k}{do}\PY{+w}{ }wc\PY{+w}{ }\PY{n+nv}{\PYZdl{}filename}\PY{p}{;}\PY{+w}{ }\PY{k}{done}
+\end{Verbatim}
+\end{tcolorbox}
+
+    However, it is useful to be able to run multiple commands that process
+some data and produce some output. These commands can be put into a file
+(i.e.~a script), and run on input data. This has the advantage of saving
+time and reproducibility, so that the same analysis can be run on many
+input data sets.
+
+    \hypertarget{introduction-to-bash-scripting}{%
+\subsection{Introduction to BASH
+scripting}\label{introduction-to-bash-scripting}}
+
+It is traditional when learning a new language (in this case BASH), to
+write a script that says ``Hello World!''. Open a terminal and make a
+new directory in your home called \texttt{scripts}, by typing
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{cd}\PY{+w}{ }\PYZti{}
+mkdir\PY{+w}{ }\PYZti{}/scripts
+\end{Verbatim}
+\end{tcolorbox}
+
+    Next open a text editor, which you will use to write the script. What
+text editors are available will depend on your system. For example,
+gedit in Linux. Do not try to use a word processor, such as Word! If you
+don't already have a favorite, try nano by running the following
+command:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+nano\PY{+w}{ }scripts/hello.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    Type this into the text editor:
+
+\begin{verbatim}
+echo Hello World!
+\end{verbatim}
+
+and save this to a file called \texttt{hello.sh} in your new
+\texttt{scripts} directory. This script will print
+\texttt{Hello\ World!} to the screen when we run it. First, check that
+the script is saved in the correct place.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ls\PY{+w}{ }scripts/hello.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now try to run the script. For now, we need to tell Linux that this is a
+BASH script and where it is (inside the scripts directory):
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+bash\PY{+w}{ }scripts/hello.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{setting-up-a-scripts-directory}{%
+\subsection{Setting up a scripts
+directory}\label{setting-up-a-scripts-directory}}
+
+It would be nice if our scripts could be run from anywhere in the
+filesystem, without having to tell Linux where the script is, or that it
+is a BASH script. This is how built-in commands work, like \texttt{cd}
+or \texttt{ls}.
+
+To tell Linux that the script is a BASH script, edit the file and add
+this line as the first line of the script:
+
+\begin{verbatim}
+#!/usr/bin/env bash
+\end{verbatim}
+
+and remember to save the script again. This special line at the start of
+the file tells Linux that the file is a bash script, so that it expects
+bash commands throughout the file. There is one more change to be made
+to the file to tell Linux that it is a program to be run (it is
+``executable''). This is done with the command \texttt{chmod}. Type this
+into the terminal to make the file executable:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+chmod\PY{+w}{ }+x\PY{+w}{ }scripts/hello.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now, the script can be run, but we must still tell Linux where the
+script is in the filesystem. In this case, it is in a directory called
+scripts in the current working directory, ``\texttt{./scripts}''.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+./scripts/hello.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    We need to change our setup so that Linux can find the script without us
+having to explicitly say where it is. Whenever a command is typed into
+Linux, it has a list of directories that it searches through to look for
+the command. To see the list of directories type:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{echo}\PY{+w}{ }\PY{n+nv}{\PYZdl{}PATH}
+\end{Verbatim}
+\end{tcolorbox}
+
+    It returns a list of directories, which are all the places Linux will
+look for a command. First, check what happens if we try to run the
+script without telling Linux where it is:
+
+\begin{verbatim}
+hello.sh
+bash: hello.sh: command not found
+\end{verbatim}
+
+Linux did not find it! The command to run to add the scripts directory
+to \texttt{\$PATH} is:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{export}\PY{+w}{ }\PY{n+nv}{PATH}\PY{o}{=}\PY{n+nv}{\PYZdl{}PATH}:\PYZti{}/scripts/
+\end{Verbatim}
+\end{tcolorbox}
+
+    If you want this change to be permanent, ie so that Linux finds your
+scripts after you restart your computer or logout and login, add that
+line to the end of a file called \texttt{\textasciitilde{}/.bashrc}. If
+you are using a Mac, then the file should instead be
+\texttt{\textasciitilde{}/.bash\_profile}. If the file does not already
+exist, then create it and put that line into it.
+
+    Now the script works, no matter where we are in the filesystem. Linux
+will check the scripts directory and find the file \texttt{hello.sh}.
+You can be \textit{anywhere} in your filesystem, and simply running
+
+\begin{verbatim}
+hello.sh
+\end{verbatim}
+
+will always work. Try it now.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+hello.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    In general, when making a new script, you can now copy and edit an
+existing script, or make a new one like this:
+
+\begin{verbatim}
+cd ~/scripts
+touch my_new_script.sh
+chmod +x my_new_script.sh
+\end{verbatim}
+
+and then open \texttt{my\_new\_script.sh} in a text editor.
+
+    If you would like to learn more advanced bash scripting we have provided
+some further optional material in \href{bash.ipynb}{BASH Scripting}.
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{bash-scripting}{%
+\section{BASH scripting}\label{bash-scripting}}
+
+This section is additional material and provided for anyone who would
+like to learn more advanced bash scripting.
+
+Before you start this section change into the \texttt{bash\_scripts}
+directory:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{cd}\PY{+w}{ }../bash\PYZus{}scripts
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{getting-options-from-the-terminal-and-printing-a-help-message}{%
+\subsection{Getting options from the terminal and printing a help
+message}\label{getting-options-from-the-terminal-and-printing-a-help-message}}
+
+Usually, we would like a script to read in options from the user, such
+as the name of an input file. This would mean a script can be run like
+this:
+
+\begin{verbatim}
+my_script.sh input_file
+\end{verbatim}
+
+Inside the script, the parameters provided by the user are given the
+names \texttt{\$1}, \texttt{\$2}, \texttt{\$3} etc (do not confuse these
+with column names used by \texttt{awk}!). Here is a simple example that
+expects the user to provide a filename and a number. The script simply
+prints the filename to the screen, and then the first few lines of the
+file (the number of lines is determined by the number given by the
+user).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+cat\PY{+w}{ }options\PYZus{}example.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+options\PYZus{}example.sh\PY{+w}{ }test\PYZus{}file\PY{+w}{ }\PY{l+m}{2}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The options have been used by the script, but the script itself is not
+very readable. It is better to use names instead of \texttt{\$1} and
+\texttt{\$2}. Here is an improved version of the script that does
+exactly the same as the previous script, but is more readable.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+cat\PY{+w}{ }options\PYZus{}example.2.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{checking-options-from-the-user}{%
+\subsection{Checking options from the
+user}\label{checking-options-from-the-user}}
+
+The previous scripts will have strange behaviour if the input is not as
+expected by the script. Many things could go wrong. For example:
+
+\begin{itemize}
+\tightlist
+\item
+  The wrong number of options are given by the user
+\item
+  The input file does not exist.
+\end{itemize}
+
+Try running the script with different options and see what happens.
+
+A convention with scripts is that it should output a help message if it
+is not run correctly. This shows anyone how the script should be run
+(including you!) without having to look at the code inside the script.
+
+A basic check for this script would be to verify that two options were
+supplied, and if not then print a help message. The code looks like
+this:
+
+\begin{verbatim}
+if [ $# -ne 2 ]
+then
+        echo "usage: options_example.3.sh filename number_of_lines"
+        echo
+        echo "Prints the filename, and the given first number of lines of the file"
+        exit
+fi
+\end{verbatim}
+
+You can copy this code into the start of any of your scripts, and easily
+modify it to work for that script. A little explanation:
+
+\begin{itemize}
+\tightlist
+\item
+  A special variable \texttt{\$\#} has been used, which is the number of
+  options that were given by the user.
+\item
+  The whole block of code has the form
+  ``\texttt{if\ {[}\ \$\#\ -ne\ 2\ {]}\ then\ ....\ fi}''. This only
+  runs the code between the \texttt{then} and \texttt{fi}, if
+  \texttt{\$\#} (the number of options) is not 2.
+\item
+  The line \texttt{exit} simply makes the script end, so that no more
+  code is run.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+options\PYZus{}example.3.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    Another check is that the input file really does exist. If it does not
+exist, then there is no point in trying to run any more code. This can
+be checked with another \texttt{if\ ...\ then\ ...\ fi} block of code:
+
+\begin{verbatim}
+if [ ! -f $filename ]
+
+then
+    echo "File '$filename' not found! Cannot continue"
+    exit
+fi
+\end{verbatim}
+
+Putting this all together, the script now looks like this:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+cat\PY{+w}{ }options\PYZus{}example.3.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    Two new features have also been introduced in this file:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The second line is ``\texttt{set\ -eu}''. Without this line, if any
+  line produces an error, the script will carry on regardless to the end
+  of the script. Using the \texttt{-e} option, an error anywhere in the
+  file will result in the script stopping at the line that produced the
+  error, instead of continuing. In general, it is best that the script
+  stops at any error. The \texttt{-u} creates an error if you try to use
+  a variable which doesn't exist. This helps to stop typos doing bad
+  things to your analysis.
+\item
+  There are several lines starting with a hash \texttt{\#}. These lines
+  are ``comment lines'' that are not run. They are used to document the
+  code, containing explanations of what is happening. It is good
+  practice to comment your scripts!
+\end{enumerate}
+
+The above script provides a template for writing your own scripts. The
+general method is:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Tell Linux that this is a BASH script, and to stop at the first error.
+\item
+  Check if the user ran the script correctly. If not, output a message
+  telling the user how to run the script.
+\item
+  Check the input looks OK (in this case, that the input file exists).
+\item
+  Process the input.
+\end{enumerate}
+
+\hypertarget{using-variables-to-store-output-from-commands}{%
+\subsection{Using variables to store output from
+commands}\label{using-variables-to-store-output-from-commands}}
+
+It can be useful to run a command and put the results into a variable.
+Recall that we stored the input from the user in sensibly named
+variables:
+
+\begin{verbatim}
+filename=$1
+\end{verbatim}
+
+The part after the equals sign could actually be any command that
+returns some output. For example, running this in Linux
+
+\begin{verbatim}
+wc -l filename | awk '{print $1}'
+\end{verbatim}
+
+returns the number of lines. In case you are wondering why the command
+includes
+\texttt{\textbar{}\ awk\ \textquotesingle{}\{print\ \$1\}\textquotesingle{}},
+check what happens with and without the pipe to \texttt{awk}:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+wc\PY{+w}{ }\PYZhy{}l\PY{+w}{ }options\PYZus{}example.3.sh
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+wc\PY{+w}{ }\PYZhy{}l\PY{+w}{ }options\PYZus{}example.3.sh\PY{+w}{ }\PY{p}{|}\PY{+w}{ }awk\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZob{}print \PYZdl{}1\PYZcb{}\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    With a small change, this can be stored in a variable and then used
+later.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nv}{filename}\PY{o}{=}options\PYZus{}example.3.sh
+\PY{n+nv}{line\PYZus{}count}\PY{o}{=}\PY{k}{\PYZdl{}(}wc\PY{+w}{ }\PYZhy{}l\PY{+w}{ }\PY{n+nv}{\PYZdl{}filename}\PY{+w}{ }\PY{p}{|}\PY{+w}{ }awk\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}\PYZob{}print \PYZdl{}1\PYZcb{}\PYZsq{}}\PY{k}{)}
+\PY{n+nb}{echo}\PY{+w}{ }There\PY{+w}{ }are\PY{+w}{ }\PY{n+nv}{\PYZdl{}line\PYZus{}count}\PY{+w}{ }lines\PY{+w}{ }\PY{k}{in}\PY{+w}{ }the\PY{+w}{ }file\PY{+w}{ }\PY{n+nv}{\PYZdl{}filename}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{exercises}{%
+\subsection{Exercises}\label{exercises}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Write a script that gets a filename from the user. If the file exists,
+  it prints a nice human-readable message telling the user how many
+  lines are in the file.
+\item
+  Use a loop to run the script from Exercise 1 on the files in the
+  directory \texttt{loop\_files/}.
+\item
+  Write a script that takes a GFF filename as input. Make the script
+  produce a summary of various properties of the file. There is an
+  example input file provided called
+  \texttt{bash\_scripts/exercise\_3.gff}. Use your imagination! You
+  could have a look back at the \texttt{awk} section of the course for
+  inspiration. Here are some ideas you may wish to try:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Does the file exist?
+\item
+  How many records (ie lines) are in the file?
+\item
+  How many genes are in the file?
+\item
+  Is the file badly formatted in any way (eg wrong number of columns, do
+  the coordinates look like numbers)?
+\end{itemize}
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{linux-quick-reference-guide}{%
+\section{Linux Quick Reference
+Guide}\label{linux-quick-reference-guide}}
+
+\hypertarget{looking-at-files-and-moving-them-around}{%
+\subsection{Looking at files and moving them
+around}\label{looking-at-files-and-moving-them-around}}
+
+\begin{verbatim}
+pwd # Tell me which directory I'm in
+ls # What else is in this directory
+ls .. # What is in the directory above me
+ls foo/bar/ # What is inside the bar directory which is inside the foo/ directory
+ls -lah foo/ # Give the the details (-l) of all files and folders (-a) using human
+             # readable file sizes (-h)
+cd ../.. # Move up two directories
+cd ../foo/bar # Move up one directory and down into the foo/bar/ subdirectories
+cp -r foo/ baz/ # Copy the foo/ directory into the baz/ directory
+mv baz/foo .. # Move the foo directory into the parent directory
+rm -r ../foo # remove the directory called foo/ from the parent directory
+find foo/ -name "*.gff" # find all the files with a gff extension in the directory foo/
+\end{verbatim}
+
+\hypertarget{looking-in-files}{%
+\subsection{Looking in files}\label{looking-in-files}}
+
+\begin{verbatim}
+less bar.bed # scroll through bar.bed
+grep chrom bar.bed | less -S # Only look at lines in bar.bed which have 'chrom' and
+                             # don't wrap lines (-S)
+head -20 bar.bed # show me the first 20 lines of bar.bed
+tail -20 bar.bed # show me the last 20 lines
+cat bar.bed # show me all of the lines (bad for big files)
+wc -l bar.bed # how many lines are there
+sort -k 2 -n bar.bed # sort by the second column in numerical order
+\end{verbatim}
+
+\hypertarget{grep}{%
+\subsection{Grep}\label{grep}}
+
+\begin{verbatim}
+grep foo bar.bed # show me the lines in bar.bed with 'foo' in them
+grep foo baz/* # show me all examples of foo in the files immediately within baz/
+grep -r foo baz/ # show me all examples of foo in baz/ and every subdirectory within it
+grep '^foo' bar.bed # show me all of the lines begining with foo
+grep 'foo$' bar.bed # show me all of the lines ending in foo
+grep -i '^[acgt]$' bar.bed # show me all of the lines which only have the characters
+                           # a,c,g and t (ignoring their case)
+grep -v foo bar.bed # don't show me any files with foo in them
+\end{verbatim}
+
+\hypertarget{awk}{%
+\subsection{Awk}\label{awk}}
+
+\begin{verbatim}
+awk '{print $1}' bar.bed # just the first column
+awk '$4 ~ /^foo/' bar.bed # just rows where the 4th column starts with foo
+awk '$4 == "foo" {print $1}' bar.bed # the first column of rows where the 4th column is foo
+awk -F"\t" '{print $NF}' bar.bed # ignore spaces and print the last column
+awk -F"\t" '{print $(NF-1)}' bar.bed # print the penultimate column
+\end{verbatim}
+
+\hypertarget{piping-redirection-and-more-advanced-queries}{%
+\subsection{Piping, redirection and more advanced
+queries}\label{piping-redirection-and-more-advanced-queries}}
+
+\begin{verbatim}
+grep -hv '^#' bar/*.gff | sort
+#  grep => -h: don't print file names
+#          -v: don't give me matching files
+#          '^#': get rid of the header rows
+#          'bar/*.gff': only look in the gff files in bar/
+#  sort => sort results returned from grep
+\end{verbatim}
+
+\hypertarget{a-script}{%
+\subsection{A script}\label{a-script}}
+
+\begin{verbatim}
+#!/usr/bin/env bash
+
+set -e # stop running the script if there are errors
+set -u # stop running the script if it uses an unknown variable
+set -x # print every line before you run it (useful for debugging but annoying)
+
+if [ $# -ne 2 ]
+then
+  echo "You must provide two files"
+  exit 1 # exit the programme (and number > 0 reports that this is a failure)
+fi
+
+file_one=$1
+file_two=$2
+
+if [ ! -f $file_one ]
+then
+  echo "The first file couldn't be found"
+  exit 2
+fi
+
+if [ ! -f $file_two ]
+then
+  echo "The second file couldn't be found"
+  exit 2
+fi
+
+# Get the lines which aren't headers,
+# take the first column and return the unique values
+number_of_contigs_in_one=$(awk '$1 !~ /^#/ {print $1}' $file_one | sort -u | wc -l)
+number_of_contigs_in_two=$(awk '/^[^#]/ {print $1}' $file_two | sort -u | wc -l)
+
+if [ $number_of_contigs_in_one -gt $number_of_contigs_in_two ]
+then
+  echo "The first file had more unique contigs than the second"
+  exit
+elif [ $number_of_contigs_in_one -lt $number_of_contigs_in_two ]
+then
+  echo "The second file had more unique contigs"
+  exit
+else
+  echo "The two files had the same number of contigs"
+  exit
+fi
+\end{verbatim}
+
+\hypertarget{pro-tips}{%
+\subsection{Pro tips}\label{pro-tips}}
+
+\begin{itemize}
+\tightlist
+\item
+  Use tab completion - it will save you time!
+\item
+  Always have a quick look at files with \texttt{less} or \texttt{head}
+  to double check their format
+\item
+  Watch out for data in headers and that you don't accidentally grep
+  some if you don't want them
+\item
+  Watch out for spaces, especially if you're using awk; if in doubt, use
+  \texttt{-F"\textbackslash{}t"}
+\item
+  Regular expressions are wierd, build them up slowly bit by bit
+\item
+  If you did something smart but can't remember what it was, try typing
+  \texttt{history} and it might have a record
+\item
+  \texttt{man\ the\_name\_of\_a\_command} often gives you help
+\item
+  Google is normally better at giving examples (prioritise
+  stackoverflow.com results, they're normally good)
+\end{itemize}
+
+\hypertarget{which-tool-should-i-use}{%
+\subsection{Which tool should I use?}\label{which-tool-should-i-use}}
+
+You should probable use grep if:
+
+\begin{itemize}
+\tightlist
+\item
+  you're looking for files which contain some specific text
+  (e.g.~\texttt{grep\ -r\ foo\ bar/}: look in all the files in
+  \texttt{bar/} for any with the word `foo')
+\end{itemize}
+
+You should probably use awk if:
+
+\begin{itemize}
+\tightlist
+\item
+  your data has columns
+\item
+  you need to do simple maths
+\end{itemize}
+
+You should use find if:
+
+\begin{itemize}
+\tightlist
+\item
+  you know something about a file (like it's name or creation date) but
+  not where it is
+\item
+  you want a list of all the files in a subdirectory and its
+  subdirectories etc.
+\end{itemize}
+
+You should write a script if:
+
+\begin{itemize}
+\tightlist
+\item
+  your code doesn't fit on one line
+\item
+  it's doing something you might want to do again in 3 months
+\item
+  you want someone else to be able to do it without asking loads of
+  questions
+\item
+  you're doing something sensitive (e.g.~deleting loads of files)
+\item
+  you're doing something lots of times
+\end{itemize}
+
+You should probably use less or head:
+
+\begin{itemize}
+\tightlist
+\item
+  always, you should always use less or head to check intermediary steps
+  in your analysis
+\end{itemize}
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\end{document}
