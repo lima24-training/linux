@@ -1,3 +1,3 @@
 # Linux for Bioinformatics
 
-A tutorial on Linux for Bioinformatics
+This is a tutorial on Linux for Bioinformatics
